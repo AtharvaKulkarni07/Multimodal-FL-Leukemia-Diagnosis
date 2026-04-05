@@ -1,65 +1,321 @@
-# 🩸 Privacy-Preserving Multimodal Federated Learning for Acute Leukemia Diagnosis
+# 🏥 Multimodal Leukemia Diagnosis System - Web Application
 
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-orange?logo=tensorflow)](https://www.tensorflow.org/) 
-[![Federated Learning](https://img.shields.io/badge/Architecture-Vertical%20FL-blue)](https://en.wikipedia.org/wiki/Federated_learning) 
-[![Medical AI](https://img.shields.io/badge/Focus-Leukemia%20Diagnosis-red)](https://www.nature.com/articles/s41598-020-75618-y)
+A full-stack medical diagnosis web application using **Dual-Input Multimodal Neural Networks** (Image + Tabular Data) for acute leukemia detection.
 
-## 🚀 Project Overview
-This project implements a **Vertical Federated Learning (Split Neural Network)** architecture to diagnose Acute Leukemia. It solves the critical healthcare problem of **Data Silos**: Hospital A (Imaging) and Hospital B (Pathology) cannot share raw patient data due to privacy regulations (HIPAA/GDPR). Our system trains a high-accuracy multimodal AI without ever moving raw data from its source.
-
----
-
-## 🏗️ Architecture: The "Privacy Wall"
-Unlike standard AI that dumps data into one folder, this project uses **Vertical Federated Learning** to ensure strict modality isolation.
-
-
-
-* **Hospital A (Image Silo):** Processes Blood Smear Images using a **ResNet-50** feature extractor. It only transmits "Smashed Data" (128-dimensional latent vectors) to the server.
-* **Hospital B (Tabular Silo):** Processes Clinical Biomarkers (WBC, Hemoglobin, Blast %) using a **Multi-Layer Perceptron (MLP)**. It only transmits 32-dimensional latent vectors.
-* **Central Fusion Server:** Receives the "smashed" vectors, concatenates them, and completes the final classification. **The server never sees the original images or raw blood counts.**
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.8+-green.svg)
+![Node.js](https://img.shields.io/badge/node.js-16.0+-green.svg)
+![Status](https://img.shields.io/badge/status-Production%20Ready-brightgreen.svg)
 
 ---
 
-## 🛠️ Tech Stack
-* **Deep Learning:** TensorFlow / Keras
-* **Feature Extraction:** ResNet-50 (Transfer Learning)
-* **Data Processing:** Pandas, NumPy, Scikit-Learn
-* **Visualization:** Matplotlib, Seaborn
-* **Privacy Protocol:** Vertical Federated Learning (Simulated SplitNN)
+## 📚 Quick Navigation
+
+| 📖 Guide | 📝 Purpose |
+|---------|-----------|
+| **[STARTUP_GUIDE.md](./STARTUP_GUIDE.md)** | Complete detailed setup (recommended for first-time users) |
+| **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** | All commands in one place |
+| **[DOCKER_SETUP.md](./DOCKER_SETUP.md)** | Docker & containerization guide |
+| **[This README](#)** | Project overview and features |
 
 ---
 
-## 📊 Dataset Information
-The project utilizes a multimodal approach:
-1.  **Imaging:** Blood smear microscope images (Benign vs. Early/Pre/Pro Leukemia).
-2.  **Clinical:** Static pathology records (`pathology_ds.csv`) mapped to each patient including WBC count, Hemoglobin, Platelet count, Blast cell percentage, and LDH levels.
+## ⚡ Fastest Start (2 Steps)
+
+**Terminal 1 - Backend:**
+```bash
+cd backend && python -m venv venv
+# Windows: venv\Scripts\activate | macOS/Linux: source venv/bin/activate
+pip install -r requirements.txt && python main.py
+```
+
+**Terminal 2 - Frontend:**
+```bash
+cd frontend && npm install && npm run dev
+```
+
+Then open: **[http://localhost:3000](http://localhost:3000)** ✅
+
+Or use Docker:
+```bash
+docker-compose up --build
+```
 
 ---
 
-## 📈 Key Features
-* **Zero Data Leakage:** Pre-processing and scaling are performed locally at each "Hospital" silo using only local training distributions.
-* **Modality Fusion:** Late-stage fusion on the server allows the model to learn the correlation between visual cell patterns and chemical blood markers.
-* **Privacy-First:** Cryptographic patient alignment (simulated via sorted pseudo-IDs) ensures data belongs to the same patient without sharing raw IDs.
-* **Live Training Monitor:** Real-time progress tracking using Keras progress bars during the Split Learning simulation.
+## ✨ Features
+
+### 🎯 Core Functionality
+- **Dual-Input Analysis:** Combines blood smear microscopy images with clinical laboratory values
+- **TensorFlow/Keras Model:** Trained dual-input neural network for binary classification
+- **Real-time Predictions:** Fast inference with confidence scores
+- **Professional UI:** Modern dark-themed interface optimized for medical use
+
+### 🖼️ Image Processing
+- ✅ Support for BMP, JPG, PNG formats
+- ✅ Automatic resize to 224×224 pixels
+- ✅ Pixel normalization (0-255 → 0-1)
+- ✅ Drag-and-drop upload with preview
+- ✅ File validation and error handling
+
+### 📊 Clinical Data Input
+- ✅ 9 blood chemistry parameters (WBC, LDH, Hemoglobin, Platelets, RBC, Hematocrit, Lymphocytes, Neutrophils, Uric Acid)
+- ✅ Real-time validation
+- ✅ Reference ranges displayed
+- ✅ Automated feature scaling
+
+### 🎨 User Interface
+- ✅ Responsive two-column layout
+- ✅ Dark professional theme (slate/gray)
+- ✅ Real-time form validation
+- ✅ Loading states and animations
+- ✅ Toast notifications
+- ✅ Detailed result visualization
+- ✅ Probability breakdown charts
 
 ---
 
-## 🚀 How to Run
-1.  **Prepare Environment:**
-    Ensure you have `pathology_ds.csv` and your `kaggle.json` uploaded to the project directory.
-2.  **Install Dependencies:**
-    ```bash
-    pip install tensorflow pandas numpy scikit-learn matplotlib seaborn opencv-python
-    ```
-3.  **Execute:**
-    Run the script. It will automatically download the Kaggle dataset, parse the folders, and begin the isolated training rounds.
+## 🏗️ System Architecture
+
+```
+Browser (localhost:3000)
+         ↓
+    Frontend (Next.js + React)
+    - Drag-drop image upload
+    - Clinical feature form
+    - Results visualization
+         ↓ HTTP/FormData
+    Backend (FastAPI - localhost:8000)
+    - Image preprocessing
+    - Feature scaling
+    - Model inference
+         ↓
+    ML Model (TensorFlow/Keras)
+    - Dual-input neural network
+    - Binary classification
+```
 
 ---
 
-## 🎯 Results & Metrics
-The final model is evaluated using:
-* **Accuracy:** Overall diagnostic performance.
-* **Precision/Recall:** Critical for medical use-cases (specifically maximizing Recall to minimize False Negatives).
-* **Confusion Matrix:** Visualizing the classification performance across Healthy vs. Leukemia classes.
+## 🛠️ Technology Stack
 
---- 
+### Backend
+- **Python 3.8+** with **FastAPI** (web framework)
+- **TensorFlow/Keras** (ML model serving)
+- **scikit-learn** (feature scaling)
+- **Pillow** (image processing)
+- **uvicorn** (ASGI server)
+
+### Frontend
+- **Next.js** (React framework with TypeScript)
+- **Tailwind CSS** (dark theme styling)
+- **Axios** (HTTP client)
+- **react-hot-toast** (notifications)
+
+### Infrastructure
+- **Docker** & **Docker Compose** (containerization)
+- **Git** (version control)
+
+---
+
+## 📁 Project Structure
+
+```
+leukemia-diagnosis/
+├── backend/                    # FastAPI application
+│   ├── main.py                # Core server logic
+│   ├── requirements.txt        # Python dependencies
+│   ├── Dockerfile             # Docker image
+│   └── .env.example           # Configuration template
+├── frontend/                   # Next.js application
+│   ├── app/page.tsx           # Main dashboard
+│   ├── tailwind.config.ts     # Dark theme config
+│   ├── Dockerfile             # Docker image
+│   └── .env.example           # Configuration template
+├── models/                     # ML models & scalers
+│   ├── global_models/
+│   │   └── global_model_round_5.keras  ⭐
+│   └── scaler.pkl                      ⭐
+├── docker-compose.yml         # Orchestration
+├── STARTUP_GUIDE.md           # Detailed setup
+├── QUICK_REFERENCE.md         # All commands
+└── DOCKER_SETUP.md            # Docker guide
+```
+
+---
+
+## 💫 Key Capabilities
+
+| Feature | Details |
+|---------|---------|
+| **Image Upload** | Drag-drop or click to upload BMP/JPG/PNG (max 10MB) |
+| **Form Validation** | Real-time numeric validation with reference ranges |
+| **Model Inference** | <1s prediction with confidence scoring |
+| **Results Display** | Classification + probability breakdown charts |
+| **Error Handling** | Comprehensive validation and user feedback |
+| **CORS Support** | Configured for localhost:3000 |
+| **Dark Theme** | Professional medical interface (slate/gray tones) |
+| **Responsive Design** | Works on desktop and tablet |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- **Python 3.8+** and **Node.js 16+**
+- **Docker** (optional, for containerized setup)
+
+### Standard Setup (Recommended)
+
+1. **Clone/Download Project**
+   ```bash
+   cd leukemia-diagnosis
+   ```
+
+2. **Setup Backend** (Terminal 1)
+   ```bash
+   cd backend
+   python -m venv venv
+   # Windows: venv\Scripts\activate
+   # macOS/Linux: source venv/bin/activate
+   pip install -r requirements.txt
+   python main.py
+   ```
+
+3. **Setup Frontend** (Terminal 2)
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+
+4. **Access Dashboard**
+   ```
+   http://localhost:3000
+   ```
+
+### Docker Setup
+
+```bash
+docker-compose up --build
+```
+
+---
+
+## 📖 Documentation
+
+### For Complete Step-by-Step Setup
+👉 **[STARTUP_GUIDE.md](./STARTUP_GUIDE.md)** - Detailed instructions, troubleshooting, API docs
+
+### For Quick Command Reference
+👉 **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - All commands in one place
+
+### For Docker Users
+👉 **[DOCKER_SETUP.md](./DOCKER_SETUP.md)** - Containerization guide
+
+---
+
+## 🧪 Testing
+
+```bash
+# Check backend health
+curl http://localhost:8000/health
+
+# View API documentation
+http://localhost:8000/docs
+
+# Access frontend
+http://localhost:3000
+```
+
+---
+
+## 🐛 Quick Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| **Backend won't start** | Check Python version (3.8+), activate venv, reinstall with `pip install -r requirements.txt` |
+| **Frontend won't start** | Check Node version (16+), try `npm cache clean --force && npm install` |
+| **CORS errors** | Ensure backend running on port 8000, check allow_origins in main.py |
+| **Port in use** | Backend: change to port 8001; Frontend: `npm run dev -- -p 3001` |
+
+👉 **[Full troubleshooting guide →](./STARTUP_GUIDE.md#-troubleshooting)**
+
+---
+
+## 📊 API Reference
+
+### Base URL: `http://localhost:8000`
+
+**GET `/health`** - Health check
+```json
+{ "status": "healthy", "model_loaded": true, "scaler_loaded": true }
+```
+
+**POST `/predict`** - Diagnosis prediction
+- Input: Image file + 9 clinical features
+- Output: Classification + confidence scores
+- Full docs: `http://localhost:8000/docs`
+
+---
+
+## ⚠️ Medical Disclaimer
+
+**This system is for educational and research purposes only.**
+
+- NOT a substitute for professional medical diagnosis
+- Results should NOT be used for clinical decisions
+- Always consult qualified healthcare professionals
+- Ensure compliance with healthcare regulations (HIPAA, GDPR)
+
+---
+
+## 📈 Project Stats
+
+- **Backend Routes:** 3 (/health, /predict, /docs)
+- **Frontend Components:** 1 (Dashboard)
+- **API Endpoints:** 2 (Health, Prediction)
+- **Form Fields:** 9 clinical + 1 image
+- **Supported Formats:** BMP, JPG, PNG
+- **Model Outputs:** Binary classification with confidence
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! Follow these steps:
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/name`)
+3. Commit changes (`git commit -m 'Add feature'`)
+4. Push branch (`git push origin feature/name`)
+5. Open Pull Request
+
+---
+
+## 📞 Need Help?
+
+1. Check **[STARTUP_GUIDE.md](./STARTUP_GUIDE.md)** for detailed setup
+2. Check **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** for all commands
+3. Review API docs at `http://localhost:8000/docs`
+4. Open an issue on GitHub
+
+---
+
+## 📝 License
+
+MIT License - see LICENSE file for details
+
+---
+
+## 🎓 Resources
+
+- **FastAPI Docs:** https://fastapi.tiangolo.com/
+- **Next.js Docs:** https://nextjs.org/
+- **TensorFlow:** https://www.tensorflow.org/
+- **Tailwind CSS:** https://tailwindcss.com/
+
+---
+
+**Version:** 1.0.0 | **Status:** Production Ready | **Last Updated:** March 2026
+
+Made with ❤️ for medical AI healthcare innovation 
