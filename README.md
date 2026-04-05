@@ -9,17 +9,6 @@ A full-stack medical diagnosis web application using **Dual-Input Multimodal Neu
 
 ---
 
-## 📚 Quick Navigation
-
-| 📖 Guide | 📝 Purpose |
-|---------|-----------|
-| **[STARTUP_GUIDE.md](./STARTUP_GUIDE.md)** | Complete detailed setup (recommended for first-time users) |
-| **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** | All commands in one place |
-| **[DOCKER_SETUP.md](./DOCKER_SETUP.md)** | Docker & containerization guide |
-| **[This README](#)** | Project overview and features |
-
----
-
 ## ⚡ Fastest Start (2 Steps)
 
 **Terminal 1 - Backend:**
@@ -35,11 +24,6 @@ cd frontend && npm install && npm run dev
 ```
 
 Then open: **[http://localhost:3000](http://localhost:3000)** ✅
-
-Or use Docker:
-```bash
-docker-compose up --build
-```
 
 ---
 
@@ -112,10 +96,6 @@ Browser (localhost:3000)
 - **Axios** (HTTP client)
 - **react-hot-toast** (notifications)
 
-### Infrastructure
-- **Docker** & **Docker Compose** (containerization)
-- **Git** (version control)
-
 ---
 
 ## 📁 Project Structure
@@ -133,13 +113,10 @@ leukemia-diagnosis/
 │   ├── Dockerfile             # Docker image
 │   └── .env.example           # Configuration template
 ├── models/                     # ML models & scalers
-│   ├── global_models/
-│   │   └── global_model_round_5.keras  ⭐
-│   └── scaler.pkl                      ⭐
-├── docker-compose.yml         # Orchestration
-├── STARTUP_GUIDE.md           # Detailed setup
-├── QUICK_REFERENCE.md         # All commands
-└── DOCKER_SETUP.md            # Docker guide
+    ├── global_models/
+    │   └── global_model_round_5.keras  
+    └── scaler.pkl                      
+
 ```
 
 ---
@@ -163,7 +140,6 @@ leukemia-diagnosis/
 
 ### Prerequisites
 - **Python 3.8+** and **Node.js 16+**
-- **Docker** (optional, for containerized setup)
 
 ### Standard Setup (Recommended)
 
@@ -194,25 +170,6 @@ leukemia-diagnosis/
    http://localhost:3000
    ```
 
-### Docker Setup
-
-```bash
-docker-compose up --build
-```
-
----
-
-## 📖 Documentation
-
-### For Complete Step-by-Step Setup
-👉 **[STARTUP_GUIDE.md](./STARTUP_GUIDE.md)** - Detailed instructions, troubleshooting, API docs
-
-### For Quick Command Reference
-👉 **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** - All commands in one place
-
-### For Docker Users
-👉 **[DOCKER_SETUP.md](./DOCKER_SETUP.md)** - Containerization guide
-
 ---
 
 ## 🧪 Testing
@@ -239,7 +196,6 @@ http://localhost:3000
 | **CORS errors** | Ensure backend running on port 8000, check allow_origins in main.py |
 | **Port in use** | Backend: change to port 8001; Frontend: `npm run dev -- -p 3001` |
 
-👉 **[Full troubleshooting guide →](./STARTUP_GUIDE.md#-troubleshooting)**
 
 ---
 
@@ -294,16 +250,8 @@ Contributions welcome! Follow these steps:
 
 ## 📞 Need Help?
 
-1. Check **[STARTUP_GUIDE.md](./STARTUP_GUIDE.md)** for detailed setup
-2. Check **[QUICK_REFERENCE.md](./QUICK_REFERENCE.md)** for all commands
-3. Review API docs at `http://localhost:8000/docs`
-4. Open an issue on GitHub
-
----
-
-## 📝 License
-
-MIT License - see LICENSE file for details
+1. Review API docs at `http://localhost:8000/docs`
+2. Open an issue on GitHub
 
 ---
 
@@ -317,5 +265,3 @@ MIT License - see LICENSE file for details
 ---
 
 **Version:** 1.0.0 | **Status:** Production Ready | **Last Updated:** March 2026
-
-Made with ❤️ for medical AI healthcare innovation 
