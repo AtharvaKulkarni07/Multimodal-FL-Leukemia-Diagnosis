@@ -25,6 +25,7 @@ interface FormData {
   Uric_acid: string;
 }
 
+
 export default function LeukemiaDiagnosis() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
