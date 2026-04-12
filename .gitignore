@@ -113,3 +113,8 @@ test_data/
 # Keep these
 !.gitkeep
 !.env.example
+
+# Ignore all local models and scalers
+models/
+scalers/
+
