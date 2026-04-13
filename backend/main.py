@@ -121,7 +121,7 @@ def generate_xai_data(model, image_array, tabular_array):
 
     # --- TABULAR ATTRIBUTIONS ---
     tab_grads = tape.gradient(pred_value, tabular_tensor)[0].numpy()
-    feature_attributions = tab_grads * tabular_array[0] # Gradient * Input
+    feature_attributions = tab_grads * tabular_array[0] 
 
     return heatmap, feature_attributions
 
