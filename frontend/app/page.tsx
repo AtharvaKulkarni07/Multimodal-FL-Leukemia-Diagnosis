@@ -251,59 +251,6 @@ export default function LeukemiaDiagnosis() {
     }
   };
 
-  // --- CSV EXPORT ---
-  const downloadCSVData = () => {
-    if (!prediction) {
-      toast.error('No data available for download');
-      return;
-    }
-
-    try {
-      const csvContent = [
-        ['Leukemia Diagnosis Report'],
-        ['Generated:', new Date().toLocaleString()],
-        [''],
-        ['PREDICTION RESULTS'],
-        ['Classification', prediction.classification],
-        ['Confidence Score', `${(prediction.confidence * 100).toFixed(1)}%`],
-        ['Confidence Variance', `${(prediction.confidence_variance * 100).toFixed(4)}%`],
-        ['Standard Deviation', `${(prediction.confidence_std * 100).toFixed(4)}%`],
-        ['Probability - Healthy', `${(prediction.probability_healthy * 100).toFixed(2)}%`],
-        ['Probability - Leukemia', `${(prediction.probability_leukemia * 100).toFixed(2)}%`],
-        ['Model Used', prediction.model_used],
-        [''],
-        ['CLINICAL FEATURES INPUT'],
-        ...Object.entries(prediction.csv_export_data.clinical_features).map(([key, value]) => [key, value]),
-        [''],
-        ['MONTE CARLO DROPOUT - UNCERTAINTY QUANTIFICATION'],
-        ['Number of Iterations', prediction.csv_export_data.model_info.num_mc_iterations],
-        ['Mean Prediction', prediction.csv_export_data.model_info.mean_prediction.toFixed(6)],
-        ['Standard Deviation', prediction.csv_export_data.model_info.std_prediction.toFixed(6)],
-        ['All MC Predictions', ...prediction.csv_export_data.mc_predictions.map(p => p.toFixed(6))],
-        [''],
-        ['FEATURE IMPORTANCE (XAI)'],
-        ...Object.entries(prediction.feature_importance).map(([feature, importance]) => [feature, importance.toFixed(6)]),
-      ];
-
-      const csvString = csvContent.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
-      const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-
-      link.setAttribute('href', url);
-      link.setAttribute('download', `leukemia_diagnosis_data_${Date.now()}.csv`);
-      link.style.visibility = 'hidden';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      toast.success('CSV data exported successfully');
-    } catch (error) {
-      console.error('CSV export error:', error);
-      toast.error('Failed to export CSV data');
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#0B1120] text-slate-100 font-sans selection:bg-cyan-500/30 pb-20">
       {/* Header */}
@@ -782,13 +729,6 @@ export default function LeukemiaDiagnosis() {
                 >
                   <Download className="w-5 h-5" />
                   Download Clinical Report (PDF)
-                </button>
-                <button
-                  onClick={downloadCSVData}
-                  className="flex items-center justify-center gap-3 bg-slate-800 hover:bg-slate-700 border border-white/10 text-slate-300 font-semibold py-4 px-6 rounded-xl transition-all"
-                >
-                  <FileText className="w-5 h-5" />
-                  Export Data (CSV)
                 </button>
               </div>
 
