@@ -288,16 +288,25 @@ export default function Documentation() {
                 </div>
 
                 {/* Fusion Point */}
-                <div className="flex flex-col items-center mt-6 space-y-2">
-                  <div className="flex items-center justify-center w-full max-w-sm gap-8 relative">
-                     <div className="absolute top-0 left-[25%] w-px h-6 bg-slate-500"></div>
-                     <div className="absolute top-0 right-[25%] w-px h-6 bg-slate-500"></div>
-                     <div className="absolute top-6 left-[25%] right-[25%] h-px bg-slate-500"></div>
-                     <div className="absolute top-6 left-1/2 w-px h-6 bg-slate-500"></div>
-                  </div>
-                  <div className="mt-10"></div> {/* Spacer for lines */}
+                <div className="flex flex-col items-center mt-2">
                   
-                  <div className="w-full max-w-sm bg-emerald-900/40 border border-emerald-500/50 rounded-lg p-4 text-center shadow-lg">
+                  <div className="hidden md:block relative w-full h-12">
+        
+                     <div className="absolute top-0 left-[25%] w-px h-6 bg-slate-500"></div>
+ 
+                     <div className="absolute top-0 right-[25%] w-px h-6 bg-slate-500"></div>
+
+                     <div className="absolute top-6 left-[25%] right-[25%] h-px bg-slate-500"></div>
+
+                     <div className="absolute top-6 left-1/2 w-px h-6 bg-slate-500 -ml-[0.5px]"></div>
+                  </div>
+
+                  <div className="md:hidden py-4">
+                     <ArrowDown className="w-5 h-5 text-slate-500" />
+                  </div>
+                  
+                  {/* Fusion Block */}
+                  <div className="w-full max-w-sm bg-emerald-900/40 border border-emerald-500/50 rounded-lg p-4 text-center shadow-lg relative z-10">
                     <p className="font-bold text-emerald-300 text-sm">Late Fusion (Concatenate)</p>
                     <p className="text-xs text-slate-400 mb-3">(32 + 8 = 40 dimensional vector)</p>
                     <div className="bg-slate-800 border border-slate-600 rounded p-2 mb-2">
@@ -309,6 +318,7 @@ export default function Documentation() {
                     </div>
                   </div>
                 </div>
+
               </div>
             </section>
           </div>
