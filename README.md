@@ -1,201 +1,103 @@
-# 🏥 Multimodal Leukemia Diagnosis System - Web Application
+# 🏥 Federated Multimodal Leukemia Diagnosis System
 
-A full-stack medical diagnosis web application using **Dual-Input Multimodal Neural Networks** (Image + Tabular Data) for acute leukemia detection.
+A production-ready Clinical Decision Support System (CDSS) utilizing **Federated Learning**, **Dual-Input Multimodal Neural Networks** (Image + Tabular Data), and **Explainable AI (XAI)** for the secure and interpretable detection of acute leukemia.
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![Python](https://img.shields.io/badge/python-3.8+-green.svg)
-![Node.js](https://img.shields.io/badge/node.js-16.0+-green.svg)
-![Status](https://img.shields.io/badge/status-Production%20Ready-brightgreen.svg)
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.12-green.svg)
+![Next.js](https://img.shields.io/badge/Next.js-14.0+-black.svg)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-2.15+-orange.svg)
+![Status](https://img.shields.io/badge/status-Flagship_Prototype-brightgreen.svg)
 
 ---
 
 ## ⚡ Fastest Start (2 Steps)
 
-**Terminal 1 - Backend:**
+**Terminal 1 - Backend (FastAPI):**
 ```bash
-cd backend && python -m venv venv
+cd backend 
+python -m venv venv
 # Windows: venv\Scripts\activate | macOS/Linux: source venv/bin/activate
-pip install -r requirements.txt && python main.py
+pip install -r requirements.txt
+pip install opencv-python-headless scikit-learn  # Required for XAI and Scaler
+python main.py
 ```
 
-**Terminal 2 - Frontend:**
+**Terminal 2 - Frontend (Next.js):**
 ```bash
-cd frontend && npm install && npm run dev
+cd frontend 
+npm install
+npm install lucide-react recharts axios react-hot-toast # Ensure new UI dependencies are installed
+npm run dev
 ```
 
-Then open: **[http://localhost:3000](http://localhost:3000)** ✅
+Then open: **[http://localhost:3000](http://localhost:3000)** 
 
 ---
 
-## ✨ Features
+## ✨ Enterprise Features
 
-### 🎯 Core Functionality
-- **Dual-Input Analysis:** Combines blood smear microscopy images with clinical laboratory values
-- **TensorFlow/Keras Model:** Trained dual-input neural network for binary classification
-- **Real-time Predictions:** Fast inference with confidence scores
-- **Professional UI:** Modern dark-themed interface optimized for medical use
+### 🎯 Federated Learning & Model Selection
+- **Decentralized AI:** Employs a Federated Averaging (`FedAvg`) strategy to train models across institutions without pooling raw patient data.
+- **Dynamic Model Switching:** Users can toggle between the **Global Aggregated Model** (99.2% accuracy) and local institutional models (Site Alpha / Site Beta) directly from the UI.
+- **Differential Privacy:** Defends against model inversion attacks using local gradient clipping and additive Gaussian noise.
 
-### 🖼️ Image Processing
-- ✅ Support for BMP, JPG, PNG formats
-- ✅ Automatic resize to 224×224 pixels
-- ✅ Pixel normalization (0-255 → 0-1)
-- ✅ Drag-and-drop upload with preview
-- ✅ File validation and error handling
+### 🧠 Explainable AI (XAI) & Safety
+- **Visual Interpretability (Grad-CAM):** Generates heatmaps over blood smears to prove the neural network is focusing on morphological anomalies, not background artifacts.
+- **Tabular Feature Attribution:** Calculates partial derivatives to show exactly which clinical blood counts (e.g., high WBC, low platelets) drove the diagnosis.
+- **Uncertainty Quantification:** Utilizes Monte Carlo (MC) Dropout to run multiple inference passes, calculating prediction variance to warn doctors of Out-of-Distribution (OOD) data.
 
-### 📊 Clinical Data Input
-- ✅ 9 blood chemistry parameters (WBC, LDH, Hemoglobin, Platelets, RBC, Hematocrit, Lymphocytes, Neutrophils, Uric Acid)
-- ✅ Real-time validation
-- ✅ Reference ranges displayed
-- ✅ Automated feature scaling
+### 🧬 Multimodal Late-Fusion Architecture
+- **Dual-Input Analysis:** Combines 224x224 blood smear microscopy images (CNN branch) with 9 clinical laboratory values (MLP branch).
+- **Automated Data Processing:** Real-time image normalization, resizing, and tabular standard scaling (`joblib`).
+- **One-Click Demo Profiles:** Pre-loaded clinical profiles (Healthy/Leukemia) for fast system validation.
 
-### 🎨 User Interface
-- ✅ Responsive two-column layout
-- ✅ Dark professional theme (slate/gray)
-- ✅ Real-time form validation
-- ✅ Loading states and animations
-- ✅ Toast notifications
-- ✅ Detailed result visualization
-- ✅ Probability breakdown charts
+### 🎨 Professional UI & Interactive Documentation
+- **Glassmorphism Design:** Sleek, modern dark-themed interface utilizing Tailwind CSS and Lucide React icons.
+- **Native Data Visualization:** Built-in documentation page (`/documentation`) featuring interactive `recharts` graphs proving FL convergence, non-IID data handling, and local vs. global performance.
 
 ---
 
 ## 🏗️ System Architecture
 
-```
+```text
 Browser (localhost:3000)
-         ↓
+         ↓ (FormData: Image + 9 Features + Model Choice)
     Frontend (Next.js + React)
-    - Drag-drop image upload
-    - Clinical feature form
-    - Results visualization
-         ↓ HTTP/FormData
+    - Dynamic Model Selector
+    - Demo Data Autofill
+    - XAI Visualization Dashboard
+         ↓ HTTP POST /predict
     Backend (FastAPI - localhost:8000)
-    - Image preprocessing
-    - Feature scaling
-    - Model inference
+    - Image & Tabular Preprocessing
+    - Grad-CAM & Gradient Math Engine
          ↓
     ML Model (TensorFlow/Keras)
-    - Dual-input neural network
-    - Binary classification
+    - Late-Fusion Multimodal Network
+    - Binary Focal Crossentropy (Handles Class Imbalance)
 ```
-
----
-
-## 🛠️ Technology Stack
-
-### Backend
-- **Python 3.8+** with **FastAPI** (web framework)
-- **TensorFlow/Keras** (ML model serving)
-- **scikit-learn** (feature scaling)
-- **Pillow** (image processing)
-- **uvicorn** (ASGI server)
-
-### Frontend
-- **Next.js** (React framework with TypeScript)
-- **Tailwind CSS** (dark theme styling)
-- **Axios** (HTTP client)
-- **react-hot-toast** (notifications)
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 leukemia-diagnosis/
-├── backend/                    # FastAPI application
-│   ├── main.py                # Core server logic
-│   ├── requirements.txt        # Python dependencies
-│   ├── Dockerfile             # Docker image
-│   └── .env.example           # Configuration template
+├── backend/                    # FastAPI application & ML Inference
+│   ├── main.py                 # Core server logic & XAI generators
+│   └── requirements.txt        
 ├── frontend/                   # Next.js application
-│   ├── app/page.tsx           # Main dashboard
-│   ├── tailwind.config.ts     # Dark theme config
-│   ├── Dockerfile             # Docker image
-│   └── .env.example           # Configuration template
-├── models/                     # ML models & scalers
-    ├── global_models/
-    │   └── global_model_round_5.keras  
-    └── scaler.pkl                      
-
+│   ├── app/page.tsx            # Main Diagnostic Dashboard
+│   ├── app/documentation/      # Architecture & FL Results Page
+│   └── tailwind.config.ts      
+├── models/                     # Federated ML assets
+    ├── base models/            # Local Institutional Models
+    │   ├── local_model_alpha.keras
+    │   └── local_model_beta.keras
+    ├── global models/          # Aggregated Models
+    │   └── global_model.keras  
+    └── scaler/                 
+        └── scaler_global.joblib # Scikit-learn standardization rules
 ```
-
----
-
-## 💫 Key Capabilities
-
-| Feature | Details |
-|---------|---------|
-| **Image Upload** | Drag-drop or click to upload BMP/JPG/PNG (max 10MB) |
-| **Form Validation** | Real-time numeric validation with reference ranges |
-| **Model Inference** | <1s prediction with confidence scoring |
-| **Results Display** | Classification + probability breakdown charts |
-| **Error Handling** | Comprehensive validation and user feedback |
-| **CORS Support** | Configured for localhost:3000 |
-| **Dark Theme** | Professional medical interface (slate/gray tones) |
-| **Responsive Design** | Works on desktop and tablet |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- **Python 3.8+** and **Node.js 16+**
-
-### Standard Setup (Recommended)
-
-1. **Clone/Download Project**
-   ```bash
-   cd leukemia-diagnosis
-   ```
-
-2. **Setup Backend** (Terminal 1)
-   ```bash
-   cd backend
-   python -m venv venv
-   # Windows: venv\Scripts\activate
-   # macOS/Linux: source venv/bin/activate
-   pip install -r requirements.txt
-   python main.py
-   ```
-
-3. **Setup Frontend** (Terminal 2)
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-4. **Access Dashboard**
-   ```
-   http://localhost:3000
-   ```
-
----
-
-## 🧪 Testing
-
-```bash
-# Check backend health
-curl http://localhost:8000/health
-
-# View API documentation
-http://localhost:8000/docs
-
-# Access frontend
-http://localhost:3000
-```
-
----
-
-## 🐛 Quick Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| **Backend won't start** | Check Python version (3.8+), activate venv, reinstall with `pip install -r requirements.txt` |
-| **Frontend won't start** | Check Node version (16+), try `npm cache clean --force && npm install` |
-| **CORS errors** | Ensure backend running on port 8000, check allow_origins in main.py |
-| **Port in use** | Backend: change to port 8001; Frontend: `npm run dev -- -p 3001` |
-
 
 ---
 
@@ -203,65 +105,34 @@ http://localhost:3000
 
 ### Base URL: `http://localhost:8000`
 
-**GET `/health`** - Health check
+**GET `/health`** - Health check & asset verification
 ```json
-{ "status": "healthy", "model_loaded": true, "scaler_loaded": true }
+{ 
+  "status": "healthy", 
+  "models_loaded": {"global": true, "alpha": true, "beta": true}, 
+  "scaler_loaded": true 
+}
 ```
 
-**POST `/predict`** - Diagnosis prediction
-- Input: Image file + 9 clinical features
-- Output: Classification + confidence scores
-- Full docs: `http://localhost:8000/docs`
+**POST `/predict`** - Multimodal Inference & XAI Generation
+- **Input (FormData):** `file` (Image), `WBC_count` ... `Uric_acid` (Floats), `model_type` (String: "global"|"alpha"|"beta")
+- **Output:**
+```json
+{
+  "classification": "Leukemia",
+  "confidence": 0.985,
+  "model_used": "global",
+  "explanation_image": "<base64_gradcam_string>",
+  "feature_importance": {"WBC_count": 0.45, "Platelet_count": -0.12...}
+}
+```
 
 ---
 
-## ⚠️ Medical Disclaimer
+## ⚠️ Clinical Disclaimer
 
-**This system is for educational and research purposes only.**
+**This system is a Clinical Decision Support System (CDSS) prototype built for research and educational purposes under a Federated Learning framework.**
 
-- NOT a substitute for professional medical diagnosis
-- Results should NOT be used for clinical decisions
-- Always consult qualified healthcare professionals
-- Ensure compliance with healthcare regulations (HIPAA, GDPR)
-
----
-
-## 📈 Project Stats
-
-- **Backend Routes:** 3 (/health, /predict, /docs)
-- **Frontend Components:** 1 (Dashboard)
-- **API Endpoints:** 2 (Health, Prediction)
-- **Form Fields:** 9 clinical + 1 image
-- **Supported Formats:** BMP, JPG, PNG
-- **Model Outputs:** Binary classification with confidence
-
----
-
-## 🤝 Contributing
-
-Contributions welcome! Follow these steps:
-1. Fork the repository
-2. Create feature branch (`git checkout -b feature/name`)
-3. Commit changes (`git commit -m 'Add feature'`)
-4. Push branch (`git push origin feature/name`)
-5. Open Pull Request
-
----
-
-## 📞 Need Help?
-
-1. Review API docs at `http://localhost:8000/docs`
-2. Open an issue on GitHub
-
----
-
-## 🎓 Resources
-
-- **FastAPI Docs:** https://fastapi.tiangolo.com/
-- **Next.js Docs:** https://nextjs.org/
-- **TensorFlow:** https://www.tensorflow.org/
-- **Tailwind CSS:** https://tailwindcss.com/
-
----
-
-**Version:** 1.0.0 | **Status:** Production Ready | **Last Updated:** March 2026
+- It is **NOT** a substitute for professional medical diagnosis.
+- Results should **NOT** be used for primary clinical decisions.
+- Always consult a qualified hematologist or oncologist.
