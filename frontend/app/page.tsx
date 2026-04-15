@@ -165,8 +165,10 @@ export default function LeukemiaDiagnosis() {
       formDataToSend.append('model_type', selectedModel);
       Object.entries(formData).forEach(([key, value]) => formDataToSend.append(key, value));
 
+      console.log(process.env.NEXT_PUBLIC_API_URL + '/predict');
+
       const response = await axios.post<PredictionResponse>(
-        'http://localhost:8000/predict',
+        process.env.NEXT_PUBLIC_API_URL + '/predict',
         formDataToSend,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );

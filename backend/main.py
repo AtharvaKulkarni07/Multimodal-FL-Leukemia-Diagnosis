@@ -16,12 +16,15 @@ from pydantic import BaseModel
 import tensorflow as tf
 from tensorflow import keras
 from PIL import Image
+from dotenv import load_dotenv
 import joblib
 import logging
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+load_dotenv()
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -33,7 +36,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  
+    allow_origins=os.getenv("ALLOWED_ORIGINS", "*").split(","),  
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,15 +48,14 @@ MODELS = {
     "alpha": None,
     "beta": None
 }
+
 SCALER = None
 
-# CORRECTED PATHS
-BASE_DIR = os.path.dirname(__file__)
 PATHS = {
-    "global": os.path.join(BASE_DIR, "../models/global models/global_model.keras"),
-    "alpha": os.path.join(BASE_DIR, "../models/base models/local_model_alpha.keras"),
-    "beta": os.path.join(BASE_DIR, "../models/base models/local_model_beta.keras"),
-    "scaler": os.path.join(BASE_DIR, "../models/scaler/scaler_global.joblib")
+    "global": os.getenv("GLOBAL_MODEL_PATH"),
+    "alpha": os.getenv("ALPHA_MODEL_PATH"),
+    "beta": os.getenv("BETA_MODEL_PATH"),
+    "scaler": os.getenv("SCALER_PATH")
 }
 
 FEATURE_NAMES = [
@@ -72,8 +74,8 @@ class PredictionResponse(BaseModel):
     probability_leukemia: float
     model_used: str
     message: str
-    explanation_image: str  # Base64 encoded Grad-CAM heatmap
-    feature_importance: dict  # Tabular gradient attributions
+    explanation_image: str  
+    feature_importance: dict  
     csv_export_data: dict  
 
 # --- XAI ENGINE (EXPLAINABLE AI) ---
