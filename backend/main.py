@@ -14,7 +14,7 @@ from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import tensorflow as tf
-from tensorflow import keras
+from tensorflow import keras # type: ignore
 from PIL import Image
 from dotenv import load_dotenv
 import joblib
