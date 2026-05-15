@@ -848,7 +848,7 @@ export default function LeukemiaDiagnosis() {
                 <span>Multimodal AI Pipeline</span>
               </div>
               <div className="flex items-center gap-1 text-slate-500">
-                {"Built with "}<Heart className="w-3 h-3 text-red-400/70 mx-0.5" />{" for safer, privacy-preserving healthcare AI"}
+                {"Built"}{" for safer, privacy-preserving healthcare AI"}
               </div>
             </div>
           </div>
